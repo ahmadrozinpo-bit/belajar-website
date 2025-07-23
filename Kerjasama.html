@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kerjasama</title>
+    <link
+      rel="icon"
+      href="https://partnership.uii.ac.id/build/assets/uii-logo-9b1629b4.png"
+      sizes="32x32"
+      type="image/png"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/StephanWagner/svgMap@v2.10.1/dist/svgMap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/StephanWagner/svgMap@v2.10.1/dist/svgMap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      #summary-container div {
+        transition: all 0.3s ease-in-out;
+      }
+      [x-cloak] {
+        display: none !important;
+      }
+      .active-lang {
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+      .transition-nav {
+        transition: all 0.3s ease-in-out;
+      }
+      .mobile-slide {
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(100%);
+      }
+      .mobile-slide.show {
+        transform: translateX(0);
+      }
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
+      details[open] > summary {
+        color: #fef08a;
+      }
+      details > div {
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+      }
+      details[open] > div {
+        opacity: 1;
+        max-height: 500px;
+        margin-top: 0.5rem;
+      }
+      #slider img {
+        height: auto;
+        max-height: 100vh;
+        object-fit: cover;
+      }
+      .top_site_main {
+        position: relative;
+        padding: 0;
+        text-align: center;
+        height: 250px;
+        overflow: hidden;
+      }
+      .top_site_main img.bg-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .overlay-top-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+      .page-title-wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+      }
+      .page-title {
+        color: #ffffff;
+        font-size: 48px;
+        font-weight: bold;
+      }
+      bodydata {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #fdfdfd;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th {
+        padding: 10px 15px;
+        background-color: #34495e;
+        color: white;
+        border: 1px solid #ccc;
+      }
+      td {
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        vertical-align: top;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+      tr:nth-child(even) td {
+        background-color: #ecf0f1;
+      }
+      tr:nth-child(odd) td {
+        background-color: #ffffff;
+      }
+      td.animate {
+        animation: slideScale 0.5s ease-in-out;
+        background-color: #e8f8f5;
+      }
+      td.animate:hover {
+        background-color: #d6eaf8;
+        transform: scale(1.05);
+      }
+      @keyframes slideScale {
+        from {
+          opacity: 0;
+          transform: translateY(15px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .search-container {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .search-container input[type="text"] {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 300px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+      .search-container input[type="text"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+      }
+      @media (max-width: 576px) {
+        .top_site_main {
+          height: 200px;
+        }
+        .page-title {
+          font-size: 28px;
+        }
+      }
+      /* Tambahan CSS untuk tooltip svgMap agar tidak tampak terpisah oleh garis */
+      .svgMap-tooltip {
+        border: none !important;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #333;
+        line-height: 1.4;
+      }
+      .svgMap-tooltip table {
+        border: none !important;
+        border-collapse: collapse;
+      }
+      .svgMap-tooltip td {
+        border: none !important;
+        padding: 4px 0;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-800 font-sans overflow-x-hidden">
+    <!-- Icons Navbar Atas -->
+    <nav
+      class="bg-gradient-to-r from-blue-100 to-blue-200 border-b border-blue-300 py-2 text-sm"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 flex justify-end items-center space-x-4 text-blue-800"
+      >
+        <a href="mailto:info@example.com" class="hover:text-blue-600"
+          ><i data-feather="mail" class="w-4 h-4"></i
+        ></a>
+        <a href="#" class="hover:text-blue-600"
+          ><i data-feather="facebook" class="w-4 h-4"></i
+        ></a>
+        <a href="#" class="hover:text-blue-600"
+          ><i data-feather="twitter" class="w-4 h-4"></i
+        ></a>
+        <a href="#" class="hover:text-blue-600"
+          ><i data-feather="instagram" class="w-4 h-4"></i
+        ></a>
+      </div>
+    </nav>
+
+    <!-- Navbar Utama -->
+    <nav
+      class="bg-white/90 backdrop-blur-lg shadow-md sticky top-0 z-50 transition-nav py-4"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <a href="#" class="flex items-center space-x-3">
+            <img
+              src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinoQlMBen2K8neM9tGyEyHriEvRMY7pebP6P7GZbY4dyrQZHRxXI5prgA3kLn-8L0ixKd9blLGAezbGqJWmvbdJbv2B9lssN4HKMFTVdqpqHwF0_gV_d0D17iLXNVeQhvCpLJs0ZfXuV8/w1200-h630-p-k-no-nu/Unida.png"
+              alt="UGM Logo"
+              class="h-10 hover:scale-105 transition-transform duration-300"
+            />
+            <span class="text-lg font-semibold text-blue-800 hidden sm:block"
+              >Universitas Darussalam Gontor</span
+            >
+          </a>
+
+          <!-- Desktop Menu -->
+          <div
+            class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700"
+          >
+            <a
+              href="Utama.html"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="beranda"
+              >Beranda</a
+            >
+            <div class="relative group">
+              <button
+                class="flex items-center hover:text-blue-600 transition-colors"
+                id="dropdownToggle"
+              >
+                <span data-lang-id="tentang">Profil</span>
+                <i data-feather="chevron-down" class="ml-1 w-4 h-4"></i>
+              </button>
+              <div
+                id="dropdownMenu"
+                class="absolute left-0 mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-blue-50 text-gray-800"
+                  data-lang-id="sejarah"
+                  >Sejarah</a
+                >
+                <a
+                  href="visimisi.html"
+                  class="block px-4 py-2 hover:bg-blue-50 text-gray-800"
+                  data-lang-id="visi"
+                  >Visi & Misi</a
+                >
+                <a
+                  href="StrukturOrganisasi.html"
+                  class="block px-4 py-2 hover:bg-blue-50 text-gray-800"
+                  data-lang-id="struktur"
+                  >Struktur Organisasi</a
+                >
+              </div>
+            </div>
+            <a
+              href="Kerjasama.html"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="akademik"
+              >Kerjasama</a
+            >
+            <a
+              href="UrusanInternasional.html"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="penelitian"
+              >Urusan Internasional</a
+            >
+            <a
+              href="#"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="kontak"
+              >Kontak</a
+            >
+          </div>
+
+          <!-- Mobile Toggle Only -->
+          <div class="flex items-center space-x-4">
+            <div class="relative hidden md:block">
+              <button id="langToggle" class="text-gray-700 hover:text-blue-600">
+                <i data-feather="globe" class="w-5 h-5"></i>
+              </button>
+              <div
+                id="langMenu"
+                class="absolute right-0 mt-2 w-24 bg-white border border-gray-200 rounded-md shadow-lg hidden"
+              >
+                <button
+                  id="langId"
+                  class="block w-full text-left px-4 py-2 text-sm hover:bg-blue-50"
+                >
+                  ID
+                </button>
+                <button
+                  id="langEn"
+                  class="block w-full text-left px-4 py-2 text-sm hover:bg-blue-50"
+                >
+                  EN
+                </button>
+              </div>
+            </div>
+            <button id="mobileToggle" class="md:hidden text-gray-700">
+              <i data-feather="menu" id="hamburgerIcon" class="w-6 h-6"></i>
+              <i data-feather="x" id="closeIcon" class="w-6 h-6 hidden"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div
+      id="mobileMenu"
+      class="md:hidden fixed top-22 left-0 w-full h-[calc(100vh-6rem)] bg-white shadow-md p-4 hidden mobile-slide flex flex-col space-y-4 text-gray-800 text-sm z-40 overflow-y-auto"
+    >
+      <a href="Utama.html" class="hover:text-blue-600" data-lang-id="beranda"
+        >Beranda</a
+      >
+      <details class="group">
+        <summary
+          class="cursor-pointer font-semibold hover:text-blue-600"
+          data-lang-id="tentang"
+        >
+          Profil
+        </summary>
+        <div class="pl-4">
+          <a href="#" class="block hover:text-blue-600" data-lang-id="sejarah"
+            >Sejarah</a
+          >
+          <a
+            href="visimisi.html"
+            class="block hover:text-blue-600"
+            data-lang-id="visi"
+            >Visi & Misi</a
+          >
+          <a
+            href="StrukturOrganisasi.html"
+            class="block hover:text-blue-600"
+            data-lang-id="struktur"
+            >Struktur Organisasi</a
+          >
+        </div>
+      </details>
+      <a
+        href="Kerjasama.html"
+        class="hover:text-blue-600"
+        data-lang-id="akademik"
+        >Kerjasama</a
+      >
+      <a
+        href="UrusanInternasional.html"
+        class="hover:text-blue-600"
+        data-lang-id="penelitian"
+        >Urusan Internasional</a
+      >
+      <a href="#" class="hover:text-blue-600" data-lang-id="kontak">Kontak</a>
+    </div>
+    <div class="top_heading_out">
+      <div class="top_site_main">
+        <img
+          class="bg-img"
+          src="https://gontor.ac.id/wp-content/uploads/2017/03/13006606_1073153016089088_5396686831996214355_n.jpg"
+          alt="Background"
+        />
+        <span class="overlay-top-header"></span>
+        <div class="page-title-wrapper">
+          <div class="banner-wrapper container">
+            <h1 class="page-title">-Kerjasama-</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- bagan angka jumlah mitra dan mou -->
+    <!-- Judul Section -->
+
+    <!-- Statistik Section -->
+    <section class="w-full bg-gradient-to-b from-cyan-200 to-blue-200 py-16">
+      <div
+        id="summary-container"
+        class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"
+      ></div>
+    </section>
+
+    <!-- Peta Sebaran Mitra -->
+    <section
+      class="px-4 md:px-8 lg:px-16 xl:px-24 mt-10 bg-gradient-to-r from-indigo-100 via-blue-200 to-indigo-100"
+    >
+      <h2 class="text-xl font-semibold text-center mb-6">
+        Peta Sebaran Mitra Internasional
+      </h2>
+      <div id="svgMap" style="height: 650px"></div>
+    </section>
+
+    <script>
+      feather.replace();
+      AOS.init();
+
+      const summarySheetID = "1tV76Q9izoSAYEDrefP4MX-65ZKPMNSOSDfqATYVCkm4";
+      const summarySheetName = "Rekapitulasi Jumlah";
+      const summaryUrl = `https://docs.google.com/spreadsheets/d/${summarySheetID}/gviz/tq?tqx=out:json&sheet=${summarySheetName}`;
+      const csvUrlMap = `https://docs.google.com/spreadsheets/d/${summarySheetID}/gviz/tq?tqx=out:csv&sheet=Mitra`;
+
+      fetch(summaryUrl)
+        .then((res) => res.text())
+        .then((data) => {
+          const json = JSON.parse(data.substr(47).slice(0, -2));
+          const rows = json.table.rows;
+          const container = document.getElementById("summary-container");
+          const colors = ["green-800", "green-600", "yellow-600", "amber-600"];
+
+          rows.forEach((row, index) => {
+            const label = row.c[0]?.v || "";
+            const value = row.c[1]?.v || 0;
+            const card = document.createElement("div");
+            card.className = `bg-white rounded-2xl shadow-lg p-4 transform transition hover:-translate-y-2 hover:shadow-2xl`;
+            card.setAttribute("data-aos", "fade-up");
+            card.setAttribute("data-aos-delay", `${100 * (index + 1)}`);
+            card.innerHTML = `
+              <div class="text-3xl font-extrabold text-${
+                colors[index % colors.length]
+              }">${value}</div>
+              <div class="mt-2 text-gray-700 font-semibold text-sm break-words leading-snug">${label}</div>
+            `;
+            container.appendChild(card);
+          });
+        })
+        .catch((err) => {
+          document.getElementById("summary-container").innerHTML =
+            "<p class='text-red-600 col-span-4'>Gagal memuat data.</p>";
+          console.error(err);
+        });
+
+      const countryNameToCode = {
+        Afghanistan: "AF",
+        Albania: "AL",
+        Algeria: "DZ",
+        Andorra: "AD",
+        Angola: "AO",
+        "Antigua and Barbuda": "AG",
+        Argentina: "AR",
+        Armenia: "AM",
+        Australia: "AU",
+        Austria: "AT",
+        Azerbaijan: "AZ",
+        Bahamas: "BS",
+        Bahrain: "BH",
+        Bangladesh: "BD",
+        Barbados: "BB",
+        Belarus: "BY",
+        Belgium: "BE",
+        Belize: "BZ",
+        Benin: "BJ",
+        Bhutan: "BT",
+        Bolivia: "BO",
+        "Bosnia and Herzegovina": "BA",
+        Botswana: "BW",
+        Brazil: "BR",
+        Brunei: "BN",
+        "Brunei Darussalam": "BN",
+        Bulgaria: "BG",
+        "Burkina Faso": "BF",
+        Burundi: "BI",
+        "Cabo Verde": "CV",
+        Cambodia: "KH",
+        Cameroon: "CM",
+        Canada: "CA",
+        "Central African Republic": "CF",
+        Chad: "TD",
+        Chile: "CL",
+        China: "CN",
+        Colombia: "CO",
+        Comoros: "KM",
+        Congo: "CG",
+        "Costa Rica": "CR",
+        Croatia: "HR",
+        Cuba: "CU",
+        Cyprus: "CY",
+        "Czech Republic": "CZ",
+        "Democratic Republic of the Congo": "CD",
+        Denmark: "DK",
+        Djibouti: "DJ",
+        Dominica: "DM",
+        "Dominican Republic": "DO",
+        Ecuador: "EC",
+        Egypt: "EG",
+        "El Salvador": "SV",
+        "Equatorial Guinea": "GQ",
+        Eritrea: "ER",
+        Estonia: "EE",
+        Eswatini: "SZ",
+        Ethiopia: "ET",
+        Fiji: "FJ",
+        Finland: "FI",
+        France: "FR",
+        Gabon: "GA",
+        Gambia: "GM",
+        Georgia: "GE",
+        Germany: "DE",
+        Ghana: "GH",
+        Greece: "GR",
+        Grenada: "GD",
+        Guatemala: "GT",
+        Guinea: "GN",
+        "Guinea-Bissau": "GW",
+        Guyana: "GY",
+        Haiti: "HT",
+        Honduras: "HN",
+        Hungary: "HU",
+        Iceland: "IS",
+        India: "IN",
+        Indonesia: "ID",
+        Iran: "IR",
+        Iraq: "IQ",
+        Ireland: "IE",
+        Israel: "IL",
+        Italy: "IT",
+        Jamaica: "JM",
+        Japan: "JP",
+        Jordan: "JO",
+        Kazakhstan: "KZ",
+        Kenya: "KE",
+        Kiribati: "KI",
+        Kuwait: "KW",
+        Kyrgyzstan: "KG",
+        Laos: "LA",
+        Latvia: "LV",
+        Lebanon: "LB",
+        Lesotho: "LS",
+        Liberia: "LR",
+        Libya: "LY",
+        Liechtenstein: "LI",
+        Lithuania: "LT",
+        Luxembourg: "LU",
+        Madagascar: "MG",
+        Malawi: "MW",
+        Malaysia: "MY",
+        Maldives: "MV",
+        Mali: "ML",
+        Malta: "MT",
+        "Marshall Islands": "MH",
+        Mauritania: "MR",
+        Mauritius: "MU",
+        Mexico: "MX",
+        Micronesia: "FM",
+        Moldova: "MD",
+        Monaco: "MC",
+        Mongolia: "MN",
+        Montenegro: "ME",
+        Morocco: "MA",
+        Mozambique: "MZ",
+        Myanmar: "MM",
+        Namibia: "NA",
+        Nauru: "NR",
+        Nepal: "NP",
+        Netherlands: "NL",
+        "New Zealand": "NZ",
+        Nicaragua: "NI",
+        Niger: "NE",
+        Nigeria: "NG",
+        "North Korea": "KP",
+        "North Macedonia": "MK",
+        Norway: "NO",
+        Oman: "OM",
+        Pakistan: "PK",
+        Palau: "PW",
+        Palestine: "PS",
+        Panama: "PA",
+        "Papua New Guinea": "PG",
+        Paraguay: "PY",
+        Peru: "PE",
+        Philippines: "PH",
+        Poland: "PL",
+        Portugal: "PT",
+        Qatar: "QA",
+        Romania: "RO",
+        Russia: "RU",
+        Rwanda: "RW",
+        "Saint Kitts and Nevis": "KN",
+        "Saint Lucia": "LC",
+        "Saint Vincent and the Grenadines": "VC",
+        Samoa: "WS",
+        "San Marino": "SM",
+        "Sao Tome and Principe": "ST",
+        "Saudi Arabia": "SA",
+        Senegal: "SN",
+        Serbia: "RS",
+        Seychelles: "SC",
+        "Sierra Leone": "SL",
+        Singapore: "SG",
+        Slovakia: "SK",
+        Slovenia: "SI",
+        "Solomon Islands": "SB",
+        Somalia: "SO",
+        "South Africa": "ZA",
+        "South Korea": "KR",
+        "South Sudan": "SS",
+        Spain: "ES",
+        "Sri Lanka": "LK",
+        Sudan: "SD",
+        Suriname: "SR",
+        Sweden: "SE",
+        Switzerland: "CH",
+        Syria: "SY",
+        Taiwan: "TW",
+        Tajikistan: "TJ",
+        Tanzania: "TZ",
+        Thailand: "TH",
+        "Timor-Leste": "TL",
+        Togo: "TG",
+        Tonga: "TO",
+        "Trinidad and Tobago": "TT",
+        Tunisia: "TN",
+        Turkey: "TR",
+        Turkmenistan: "TM",
+        Tuvalu: "TV",
+        Uganda: "UG",
+        Ukraine: "UA",
+        "United Arab Emirates": "AE",
+        "United Kingdom": "GB",
+        "United States": "US",
+        Uruguay: "UY",
+        Uzbekistan: "UZ",
+        Vanuatu: "VU",
+        "Vatican City": "VA",
+        Venezuela: "VE",
+        Vietnam: "VN",
+        Yemen: "YE",
+        Zambia: "ZM",
+        Zimbabwe: "ZW",
+      };
+
+      async function fetchAndRenderMap() {
+        const response = await fetch(csvUrlMap);
+        const csvText = await response.text();
+        const parsed = Papa.parse(csvText.trim(), {
+          header: true,
+          skipEmptyLines: true,
+        });
+        const dataRows = parsed.data;
+
+        const countryCount = {};
+        dataRows.forEach((row) => {
+          const country = row["Negara"]?.trim();
+          if (country) {
+            countryCount[country] = (countryCount[country] || 0) + 1;
+          }
+        });
+
+        const svgMapData = {
+          data: {
+            mitra: {
+              name: "Total Mitra",
+              format: "{0}",
+              thousandSeparator: ",",
+              thresholdMax: 100,
+              thresholdMin: 1,
+            },
+          },
+          applyData: "mitra",
+          values: {},
+        };
+
+        for (const country in countryCount) {
+          const code = countryNameToCode[country];
+          if (code) {
+            svgMapData.values[code] = {
+              mitra: countryCount[country],
+              description: `Jumlah mitra: ${countryCount[country]}`,
+            };
+          } else {
+            console.warn(
+              `Negara tidak dikenali atau belum dimasukkan: ${country}`
+            );
+          }
+        }
+
+        new svgMap({
+          targetElementID: "svgMap",
+          data: svgMapData,
+          onGetTooltip: (code, data) => {
+            if (data && data.mitra) {
+              return `<div><strong>${code}</strong><br/>Jumlah mitra: ${data.mitra}</div>`;
+            }
+            return null;
+          },
+        });
+      }
+
+      fetchAndRenderMap();
+    </script>
+
+    <!--untuk exel data mitra mulai-->
+
+    <!-- JS Script (same as before) -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        feather.replace();
+
+        const langToggle = document.getElementById("langToggle");
+        const langMenu = document.getElementById("langMenu");
+        const mobileToggle = document.getElementById("mobileToggle");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const hamburgerIcon = document.getElementById("hamburgerIcon");
+        const closeIcon = document.getElementById("closeIcon");
+
+        langToggle?.addEventListener("click", () => {
+          langMenu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!langToggle.contains(e.target) && !langMenu.contains(e.target)) {
+            langMenu.classList.add("hidden");
+          }
+        });
+
+        mobileToggle?.addEventListener("click", () => {
+          const isHidden = mobileMenu.classList.contains("hidden");
+          if (isHidden) {
+            mobileMenu.classList.remove("hidden");
+            setTimeout(() => mobileMenu.classList.add("show"), 10);
+          } else {
+            mobileMenu.classList.remove("show");
+            setTimeout(() => mobileMenu.classList.add("hidden"), 300);
+          }
+          hamburgerIcon.classList.toggle("hidden");
+          closeIcon.classList.toggle("hidden");
+        });
+
+        const translations = {
+          id: {
+            beranda: "Beranda",
+            tentang: "Profil",
+            sejarah: "Sejarah",
+            visi: "Visi & Misi",
+            struktur: "Struktur Organisasi",
+            akademik: "Kerjasama",
+            penelitian: "Urusan Internasional",
+            kontak: "Kontak",
+            welcome:
+              "Selamat datang di Biro Kerjasama dan Urusan Internasional",
+          },
+          en: {
+            beranda: "Home",
+            tentang: "Profile",
+            sejarah: "History",
+            visi: "Vision & Mission",
+            struktur: "Organizational Structure",
+            akademik: "Cooperation",
+            penelitian: "International Affairs",
+            kontak: "Contact",
+            welcome:
+              "Welcome to the Bureau of Cooperation and International Affairs",
+          },
+        };
+
+        function setLanguage(lang) {
+          document.querySelectorAll("[data-lang-id]").forEach((el) => {
+            const key = el.getAttribute("data-lang-id");
+            el.textContent = translations[lang][key] || key;
+          });
+          feather.replace();
+        }
+
+        document
+          .getElementById("langId")
+          ?.addEventListener("click", () => setLanguage("id"));
+        document
+          .getElementById("langEn")
+          ?.addEventListener("click", () => setLanguage("en"));
+
+        const browserLang = navigator.language.startsWith("en") ? "en" : "id";
+        setLanguage(browserLang);
+      });
+    </script>
+
+    <!-- Footer dengan peta lokasi -->
+    <footer class="bg-blue-100 text-gray-800 mt-10">
+      <div
+        class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
+        <!-- Informasi Kontak -->
+        <div>
+          <h2 class="text-lg font-semibold text-blue-800 mb-4">Kontak</h2>
+          <p>Universitas Darussalam Gontor</p>
+          <p>Jl. Raya Siman Km. 6, Siman, Ponorogo</p>
+          <p>Email: info@unida.gontor.ac.id</p>
+          <p>Telp: (0352) 483762</p>
+        </div>
+
+        <!-- Peta Lokasi -->
+        <div>
+          <h2 class="text-lg font-semibold text-blue-800 mb-4">Lokasi Kami</h2>
+          <div class="w-full h-64 rounded-lg overflow-hidden shadow">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.930855518503!2d111.48969907405156!3d-7.902292778632479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e790aa79efd972b%3A0xf09ed064954d29b2!2sUniversity%20of%20Darussalam%20Gontor!5e0!3m2!1sen!2sid!4v1751423510168!5m2!1sen!2sid"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            >
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-200 text-center text-sm py-4 mt-8">
+        &copy; 2025 Universitas Darussalam Gontor. Hak cipta dilindungi.
+      </div>
+    </footer>
+  </body>
+</html>

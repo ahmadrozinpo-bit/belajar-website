@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visi & Misi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+      .active-lang {
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+      .transition-nav {
+        transition: all 0.3s ease-in-out;
+      }
+      .mobile-slide {
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(100%);
+      }
+      .mobile-slide.show {
+        transform: translateX(0);
+      }
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
+      details[open] > summary {
+        color: #fef08a;
+      }
+      details > div {
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+      }
+      details[open] > div {
+        opacity: 1;
+        max-height: 500px;
+        margin-top: 0.5rem;
+      }
+      #slider img {
+        height: auto;
+        max-height: 100vh;
+        object-fit: cover;
+      }
+      /* style untuk banner */
+      .top_site_main {
+        position: relative;
+        padding: 0;
+        text-align: center;
+        height: 250px; /*ukuran lebar benner*/
+        overflow: hidden;
+      }
+      .top_site_main img.bg-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .overlay-top-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+      .page-title-wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+      }
+      .page-title {
+        color: #ffffff;
+        font-size: 48px;
+        font-weight: bold;
+      }
+
+      /* Responsif untuk perangkat mobile */
+      @media (max-width: 576px) {
+        .top_site_main {
+          height: 200px;
+        }
+        .page-title {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-800 font-sans overflow-x-hidden">
+    <!-- Icons Navbar Atas -->
+    <nav
+      class="bg-gradient-to-r from-blue-100 to-blue-200 border-b border-blue-300 py-2 text-sm"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 flex justify-end items-center space-x-4 text-blue-800"
+      >
+        <a href="mailto:info@example.com" class="hover:text-blue-600"
+          ><i data-feather="mail" class="w-4 h-4"></i
+        ></a>
+        <a href="#" class="hover:text-blue-600"
+          ><i data-feather="facebook" class="w-4 h-4"></i
+        ></a>
+        <a href="#" class="hover:text-blue-600"
+          ><i data-feather="twitter" class="w-4 h-4"></i
+        ></a>
+        <a href="#" class="hover:text-blue-600"
+          ><i data-feather="instagram" class="w-4 h-4"></i
+        ></a>
+      </div>
+    </nav>
+
+    <!-- Navbar Utama -->
+    <nav
+      class="bg-white/90 backdrop-blur-lg shadow-md sticky top-0 z-50 transition-nav py-4"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <a href="#" class="flex items-center space-x-3">
+            <img
+              src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinoQlMBen2K8neM9tGyEyHriEvRMY7pebP6P7GZbY4dyrQZHRxXI5prgA3kLn-8L0ixKd9blLGAezbGqJWmvbdJbv2B9lssN4HKMFTVdqpqHwF0_gV_d0D17iLXNVeQhvCpLJs0ZfXuV8/w1200-h630-p-k-no-nu/Unida.png"
+              alt="UGM Logo"
+              class="h-10 hover:scale-105 transition-transform duration-300"
+            />
+            <span class="text-lg font-semibold text-blue-800 hidden sm:block"
+              >Universitas Darussalam Gontor</span
+            >
+          </a>
+
+          <!-- Desktop Menu -->
+          <div
+            class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700"
+          >
+            <a
+              href="Utama.html"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="beranda"
+              >Beranda</a
+            >
+            <div class="relative group">
+              <button
+                class="flex items-center hover:text-blue-600 transition-colors"
+                id="dropdownToggle"
+              >
+                <span data-lang-id="tentang">Profil</span>
+                <i data-feather="chevron-down" class="ml-1 w-4 h-4"></i>
+              </button>
+              <div
+                id="dropdownMenu"
+                class="absolute left-0 mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-blue-50 text-gray-800"
+                  data-lang-id="sejarah"
+                  >Sejarah</a
+                >
+                <a
+                  href="visimisi.html"
+                  class="block px-4 py-2 hover:bg-blue-50 text-gray-800"
+                  data-lang-id="visi"
+                  >Visi & Misi</a
+                >
+                <a
+                  href="StrukturOrganisasi.html"
+                  class="block px-4 py-2 hover:bg-blue-50 text-gray-800"
+                  data-lang-id="struktur"
+                  >Struktur Organisasi</a
+                >
+              </div>
+            </div>
+            <a
+              href="Kerjasama.html"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="akademik"
+              >Kerjasama</a
+            >
+            <a
+              href="UrusanInternasional.html"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="penelitian"
+              >Urusan Internasional</a
+            >
+            <a
+              href="#"
+              class="hover:text-blue-600 transition-colors"
+              data-lang-id="kontak"
+              >Kontak</a
+            >
+          </div>
+
+          <!-- Mobile Toggle Only -->
+          <div class="flex items-center space-x-4">
+            <div class="relative hidden md:block">
+              <button id="langToggle" class="text-gray-700 hover:text-blue-600">
+                <i data-feather="globe" class="w-5 h-5"></i>
+              </button>
+              <div
+                id="langMenu"
+                class="absolute right-0 mt-2 w-24 bg-white border border-gray-200 rounded-md shadow-lg hidden"
+              >
+                <button
+                  id="langId"
+                  class="block w-full text-left px-4 py-2 text-sm hover:bg-blue-50"
+                >
+                  ID
+                </button>
+                <button
+                  id="langEn"
+                  class="block w-full text-left px-4 py-2 text-sm hover:bg-blue-50"
+                >
+                  EN
+                </button>
+              </div>
+            </div>
+            <button id="mobileToggle" class="md:hidden text-gray-700">
+              <i data-feather="menu" id="hamburgerIcon" class="w-6 h-6"></i>
+              <i data-feather="x" id="closeIcon" class="w-6 h-6 hidden"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div
+      id="mobileMenu"
+      class="md:hidden fixed top-22 left-0 w-full h-[calc(100vh-6rem)] bg-white shadow-md p-4 hidden mobile-slide flex flex-col space-y-4 text-gray-800 text-sm z-40 overflow-y-auto"
+    >
+      <a href="Utama.html" class="hover:text-blue-600" data-lang-id="beranda"
+        >Beranda</a
+      >
+      <details class="group">
+        <summary
+          class="cursor-pointer font-semibold hover:text-blue-600"
+          data-lang-id="tentang"
+        >
+          Profil
+        </summary>
+        <div class="pl-4">
+          <a href="#" class="block hover:text-blue-600" data-lang-id="sejarah"
+            >Sejarah</a
+          >
+          <a
+            href="visimisi.html"
+            class="block hover:text-blue-600"
+            data-lang-id="visi"
+            >Visi & Misi</a
+          >
+          <a
+            href="StrukturOrganisasi.html"
+            class="block hover:text-blue-600"
+            data-lang-id="struktur"
+            >Struktur Organisasi</a
+          >
+        </div>
+      </details>
+      <a
+        href="Kerjasama.html"
+        class="hover:text-blue-600"
+        data-lang-id="akademik"
+        >Kerjasama</a
+      >
+      <a
+        href="UrusanInternasional.html"
+        class="hover:text-blue-600"
+        data-lang-id="penelitian"
+        >Urusan Internasional</a
+      >
+      <a href="#" class="hover:text-blue-600" data-lang-id="kontak">Kontak</a>
+    </div>
+    <div class="top_heading_out">
+      <div class="top_site_main">
+        <img
+          class="bg-img"
+          src="https://gontor.ac.id/wp-content/uploads/2017/03/13006606_1073153016089088_5396686831996214355_n.jpg"
+          alt="Background"
+        />
+        <span class="overlay-top-header"></span>
+        <div class="page-title-wrapper">
+          <div class="banner-wrapper container">
+            <h1 class="page-title">-Visi & Misi-</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container site-content my-10 px-6 md:px-20 space-y-16">
+      <!-- Visi Section -->
+      <div
+        class="flex flex-col md:flex-row-reverse items-center bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300"
+      >
+        <!-- Gambar Visi -->
+        <div class="md:w-1/2 w-full mb-6 md:mb-0 md:ml-6">
+          <img
+            src="https://tse2.mm.bing.net/th/id/OIP.LVSUdOZHOf2hZnOWH2W3RQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+            alt="Visi Unida"
+            class="w-full h-auto rounded-xl shadow-md"
+          />
+        </div>
+        <!-- Teks Visi -->
+        <div class="md:w-1/2 w-full">
+          <h2
+            class="text-3xl font-bold text-blue-800 border-b-4 border-blue-500 inline-block pb-1 mb-4"
+          >
+            Visi
+          </h2>
+          <p class="text-gray-700 leading-relaxed">
+            Menjadi pilar pendukung Universitas Darussalam Gontor sebagai
+            Universitas Internasional yang bermutu dan berarti dalam pelaksanaan
+            kerjasama nasional dan internasional serta pengelolaan urusan
+            internasional secara efektif dan intergral.
+          </p>
+        </div>
+      </div>
+
+      <!-- Misi Section -->
+      <div
+        class="flex flex-col md:flex-row items-center bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300"
+      >
+        <!-- Gambar Misi -->
+        <div class="md:w-1/2 w-full mb-6 md:mb-0 md:mr-6">
+          <img
+            src="https://tse2.mm.bing.net/th/id/OIP.LVSUdOZHOf2hZnOWH2W3RQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+            alt="Misi Unida"
+            class="w-full h-auto rounded-xl shadow-md"
+          />
+        </div>
+        <!-- Teks Misi -->
+        <div class="md:w-1/2 w-full">
+          <h2
+            class="text-3xl font-bold text-blue-800 border-b-4 border-blue-500 inline-block pb-1 mb-4"
+          >
+            Misi
+          </h2>
+          <ul
+            class="list-disc list-inside text-gray-700 leading-relaxed space-y-2"
+          >
+            <li>
+              Menjalankan fungsi administratif Biro Kerjasama dan Urusan
+              Internasional secara profesional dan berkualitas.
+            </li>
+            <li>
+              Melaksanakan serta mengembangkan jaringan kerjasama dengan
+              berbagai mitra nasional dan internasional.
+            </li>
+            <li>
+              Mendorong terselenggaranya mobilitas internasional (Inbound dan
+              Outbound) bagi seluruh civitas akademika.
+            </li>
+            <li>
+              Menyediakan layanan yang terpadu dan ramah bagi seluruh mahasiswa
+              asing secara integral.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS Script (same as before) -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        feather.replace();
+
+        const langToggle = document.getElementById("langToggle");
+        const langMenu = document.getElementById("langMenu");
+        const mobileToggle = document.getElementById("mobileToggle");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const hamburgerIcon = document.getElementById("hamburgerIcon");
+        const closeIcon = document.getElementById("closeIcon");
+
+        langToggle?.addEventListener("click", () => {
+          langMenu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!langToggle.contains(e.target) && !langMenu.contains(e.target)) {
+            langMenu.classList.add("hidden");
+          }
+        });
+
+        mobileToggle?.addEventListener("click", () => {
+          const isHidden = mobileMenu.classList.contains("hidden");
+          if (isHidden) {
+            mobileMenu.classList.remove("hidden");
+            setTimeout(() => mobileMenu.classList.add("show"), 10);
+          } else {
+            mobileMenu.classList.remove("show");
+            setTimeout(() => mobileMenu.classList.add("hidden"), 300);
+          }
+          hamburgerIcon.classList.toggle("hidden");
+          closeIcon.classList.toggle("hidden");
+        });
+
+        const translations = {
+          id: {
+            beranda: "Beranda",
+            tentang: "Profil",
+            sejarah: "Sejarah",
+            visi: "Visi & Misi",
+            struktur: "Struktur Organisasi",
+            akademik: "Kerjasama",
+            penelitian: "Urusan Internasional",
+            kontak: "Kontak",
+            welcome:
+              "Selamat datang di Biro Kerjasama dan Urusan Internasional",
+          },
+          en: {
+            beranda: "Home",
+            tentang: "Profile",
+            sejarah: "History",
+            visi: "Vision & Mission",
+            struktur: "Organizational Structure",
+            akademik: "Cooperation",
+            penelitian: "International Affairs",
+            kontak: "Contact",
+            welcome:
+              "Welcome to the Bureau of Cooperation and International Affairs",
+          },
+        };
+
+        function setLanguage(lang) {
+          document.querySelectorAll("[data-lang-id]").forEach((el) => {
+            const key = el.getAttribute("data-lang-id");
+            el.textContent = translations[lang][key] || key;
+          });
+          feather.replace();
+        }
+
+        document
+          .getElementById("langId")
+          ?.addEventListener("click", () => setLanguage("id"));
+        document
+          .getElementById("langEn")
+          ?.addEventListener("click", () => setLanguage("en"));
+
+        const browserLang = navigator.language.startsWith("en") ? "en" : "id";
+        setLanguage(browserLang);
+      });
+    </script>
+    <!--script visi dan misi-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const visiText = document.getElementById("visiText");
+        visiText.style.transition = "opacity 1s ease";
+        visiText.style.opacity = 0;
+
+        setTimeout(() => {
+          visiText.style.opacity = 1;
+        }, 500);
+      });
+    </script>
+
+    <!-- Footer dengan peta lokasi -->
+    <footer class="bg-blue-100 text-gray-800 mt-10">
+      <div
+        class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
+        <!-- Informasi Kontak -->
+        <div>
+          <h2 class="text-lg font-semibold text-blue-800 mb-4">Kontak</h2>
+          <p>Universitas Darussalam Gontor</p>
+          <p>Jl. Raya Siman Km. 6, Siman, Ponorogo</p>
+          <p>Email: info@unida.gontor.ac.id</p>
+          <p>Telp: (0352) 483762</p>
+        </div>
+
+        <!-- Peta Lokasi -->
+        <div>
+          <h2 class="text-lg font-semibold text-blue-800 mb-4">Lokasi Kami</h2>
+          <div class="w-full h-64 rounded-lg overflow-hidden shadow">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.930855518503!2d111.48969907405156!3d-7.902292778632479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e790aa79efd972b%3A0xf09ed064954d29b2!2sUniversity%20of%20Darussalam%20Gontor!5e0!3m2!1sen!2sid!4v1751423510168!5m2!1sen!2sid"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            >
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-blue-200 text-center text-sm py-4 mt-8">
+        &copy; 2025 Universitas Darussalam Gontor. Hak cipta dilindungi.
+      </div>
+    </footer>
+  </body>
+</html>
